@@ -1,0 +1,43 @@
+-- DROP TABLE IF EXISTS User;
+-- DROP TABLE IF EXISTS Mood;
+-- DROP TABLE IF EXISTS Tag;
+-- DROP TABLE IF EXISTS JournalEntry;
+-- DROP TABLE IF EXISTS EntryTag;
+
+
+CREATE TABLE `User` (
+    `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `name`    TEXT NOT NULL,
+    `email`    TEXT NOT NULL,
+    `password`    TEXT NOT NULL
+);
+
+CREATE TABLE `JournalEntry` (
+	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`concept`  TEXT NOT NULL,
+	`entry` TEXT NOT NULL,
+	`date` DATE NOT NULL,
+	`mood_id` INTEGER,
+	`user_id` INTEGER,
+	FOREIGN KEY(`mood_id`) REFERENCES `Mood`(`id`),
+	FOREIGN KEY(`user_id`) REFERENCES `User`(`id`)
+);
+
+CREATE TABLE `Mood` (
+	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`label`  TEXT NOT NULL
+);
+
+CREATE TABLE `Tag` (
+	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`label`  TEXT NOT NULL
+);
+
+CREATE TABLE `EntryTag` (
+	`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`entry_id` INTEGER,
+	`tag_id` INTEGER,
+	FOREIGN KEY(`entry_id`) REFERENCES `JournalEntry`(`id`),
+	FOREIGN KEY(`tag_id`) REFERENCES `Tag`(`id`)
+);
+
