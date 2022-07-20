@@ -50,3 +50,42 @@ def get_all_entries():
 
     # Use `json` package to properly serialize list as JSON
     return json.dumps(entries)
+
+
+def get_single_entry(id):
+    with sqlite3.connect("./dailyjournal.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+			j.id,
+			j.concept,
+			j.entry,
+			j.date,
+			j.mood_id,
+			m.label label
+        FROM JournalEntry j
+        JOIN Mood m
+            ON m.id = j.mood_id
+        WHERE j.id = ?
+        """, (id, ))
+
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        if data is None:
+            return False
+
+        # Create an Entry instance from the current row
+        entry = Entry(data['id'], data['concept'], data['entry'],
+                      data['date'], data['mood_id'])
+
+        # Create a mood instance from the current row
+        mood = Mood(data['id'], data['label'])
+        # Add the dictionary representation of the location to the entry
+        entry.mood = mood.__dict__
+
+        return json.dumps(entry.__dict__)
