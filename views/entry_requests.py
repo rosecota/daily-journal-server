@@ -4,6 +4,8 @@ from models import Entry, Mood
 
 
 def get_all_entries():
+    """Get all Entries
+    """
     # Open a connection to the database
     with sqlite3.connect("./dailyjournal.sqlite3") as conn:
 
@@ -53,6 +55,8 @@ def get_all_entries():
 
 
 def get_single_entry(id):
+    """Delete single Entry
+    """
     with sqlite3.connect("./dailyjournal.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -89,3 +93,15 @@ def get_single_entry(id):
         entry.mood = mood.__dict__
 
         return json.dumps(entry.__dict__)
+
+
+def delete_entry(id):
+    """Delete Entry
+    """
+    with sqlite3.connect("./dailyjournal.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM JournalEntry
+        WHERE id = ?
+        """, (id, ))

@@ -4,6 +4,8 @@ from models import Mood
 
 
 def get_all_moods():
+    """Get all Moods
+    """
     # Open a connection to the database
     with sqlite3.connect("./dailyjournal.sqlite3") as conn:
 
@@ -41,6 +43,8 @@ def get_all_moods():
 
 
 def get_single_mood(id):
+    """Get single Mood
+    """
     with sqlite3.connect("./dailyjournal.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -62,3 +66,15 @@ def get_single_mood(id):
         mood = Mood(data['id'], data['label'])
 
         return json.dumps(mood.__dict__)
+
+
+def delete_mood(id):
+    """Delete Mood
+    """
+    with sqlite3.connect("./dailyjournal.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Mood
+        WHERE id = ?
+        """, (id, ))
