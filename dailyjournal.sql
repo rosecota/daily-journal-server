@@ -41,7 +41,6 @@ INSERT INTO `Mood` VALUES (null, "TIL");
 INSERT INTO `JournalEntry` VALUES (null, "Javascript", "I learned about loops today. They can be a lot of fun.\nI learned about loops today. They can be a lot of fun.\nI learned about loops today. They can be a lot of fun.", "Mon Jul 19 2022 10:10:47", 1 );
 INSERT INTO `JournalEntry` VALUES (null, "Python", "Python is named after the Monty Python comedy group from the UK. I'm sad because I thought it was named after the snake", "Wed Jul 19 2022 10:10:47", 3 );
 INSERT INTO `JournalEntry` VALUES (null, "Python", "Why did it take so long for python to have a switch statement? It's much cleaner than if/elif blocks", "Wed Jul 19 2022 10:10:47", 4 );
-INSERT INTO `JournalEntry` VALUES (null, "Javascript", "Dealing with Date. Do you have to add an entire package just to format a date? Does that make sense?", "Wed Jul 19 2022 10:10:47", 4 );
 
 
 SELECT
@@ -54,3 +53,15 @@ SELECT
 FROM JournalEntry j
 JOIN Mood m
     ON m.id = j.mood_id
+
+SELECT 
+	j.id,
+	j.concept,
+	j.entry,
+	j.date,
+	j.mood_id,
+	m.label label
+FROM JournalEntry j
+JOIN Mood m
+	ON m.id = j.mood_id
+WHERE j.entry LIKE 'pyt'

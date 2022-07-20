@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 
-from views import get_all_entries, get_single_entry, delete_entry, get_all_moods, get_single_mood, delete_mood
+from views import get_all_entries, get_single_entry, delete_entry, get_entries_search, get_all_moods, get_single_mood, delete_mood
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -87,8 +87,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_moods()}"
 
-        # else:  # There is a ? in the path, run the query param functions
-        #     (resource, query) = parsed
+        else:  # There is a ? in the path, run the query param functions
+            (resource, query) = parsed
+            if query.get('q') and resource == 'entries':
+                response = get_entries_search(query['q'][0])
 
         self.wfile.write(response.encode())
 
