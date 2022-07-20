@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 
-from views import get_all_entries, get_single_entry, get_all_moods
+from views import get_all_entries, get_single_entry, get_all_moods, get_single_mood
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -83,7 +83,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_all_entries()}"
             elif resource == "moods":
                 if id is not None:
-                    response = f"{get_all_moods()}"
+                    response = f"{get_single_mood(id)}"
                 else:
                     response = f"{get_all_moods()}"
 
