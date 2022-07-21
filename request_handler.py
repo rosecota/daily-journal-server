@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 
-from views import get_all_entries, get_single_entry, delete_entry, get_entries_search, get_all_moods, get_single_mood, delete_mood
+from views import get_all_entries, get_single_entry, delete_entry, create_entry, get_entries_search, get_all_moods, get_single_mood, delete_mood
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -104,8 +104,18 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
-        response = f"received post request:<br>{post_body}"
-        self.wfile.write(response.encode())
+       # Convert JSON string to a Python dictionary
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        # Initialize new resource
+        new_entry = None
+        if resource == "entries":
+            new_entry = create_entry(post_body)
+
+        self.wfile.write(f"{new_entry}".encode())
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any PUT request.
@@ -124,14 +134,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
-        # Delete a single animal from the list
+        # Delete a single entry from the list
         if resource == "entries":
             delete_entry(id)
 
         if resource == "moods":
             delete_mood(id)
 
-        # Encode the new animal and send in response
+        # Encode the new entry and send in response
         self.wfile.write("".encode())
 
 
