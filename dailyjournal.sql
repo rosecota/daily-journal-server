@@ -37,6 +37,17 @@ INSERT INTO `Mood` VALUES (null, "Tragic");
 INSERT INTO `Mood` VALUES (null, "Ok");
 INSERT INTO `Mood` VALUES (null, "TIL");
 
+INSERT INTO `Tag` VALUES (null, "til");
+INSERT INTO `Tag` VALUES (null, "faq");
+INSERT INTO `Tag` VALUES (null, "client-side");
+INSERT INTO `Tag` VALUES (null, "server-side");
+INSERT INTO `Tag` VALUES (null, "javascript");
+INSERT INTO `Tag` VALUES (null, "python");
+INSERT INTO `Tag` VALUES (null, "kennels");
+INSERT INTO `Tag` VALUES (null, "daily-journal");
+INSERT INTO `Tag` VALUES (null, "levelup");
+
+
 
 INSERT INTO `JournalEntry` VALUES (null, "Javascript", "I learned about loops today. They can be a lot of fun.\nI learned about loops today. They can be a lot of fun.\nI learned about loops today. They can be a lot of fun.", "Mon Jul 19 2022 10:10:47", 1 );
 INSERT INTO `JournalEntry` VALUES (null, "Python", "Python is named after the Monty Python comedy group from the UK. I'm sad because I thought it was named after the snake", "Wed Jul 19 2022 10:10:47", 3 );
@@ -52,7 +63,7 @@ SELECT
     m.label label
 FROM JournalEntry j
 JOIN Mood m
-    ON m.id = j.mood_id
+    ON m.id = j.mood_id;
 
 SELECT 
 	j.id,
@@ -64,4 +75,4 @@ SELECT
 FROM JournalEntry j
 JOIN Mood m
 	ON m.id = j.mood_id
-WHERE j.entry LIKE 'pyt'
+WHERE j.entry LIKE 'pyt';
