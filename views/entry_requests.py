@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Entry, Mood
+from models import Entry, Mood, Tag
 
 
 def get_all_entries():
@@ -47,6 +47,33 @@ def get_all_entries():
             # Add the dictionary representation of the location to the entry
             entry.mood = mood.__dict__
 
+            tags = []
+
+            db_cursor.execute("""
+            SELECT
+                e.tag_id,
+                t.label
+            FROM EntryTag e
+            JOIN Tag t
+                ON e.tag_id = t.id
+            WHERE e.entry_id = ?
+            """, (row['id'], ))
+
+            tag_dataset = db_cursor.fetchall()
+
+            # tag_dataset = query_entrytag_by_entry_id(row['id'])
+
+            for data in tag_dataset:
+
+                # Create tag instance and set properties from db
+                tag = Tag(data['tag_id'], data['label'])
+
+                # Add the dictionary representation of the Tag to the list
+                tags.append(tag.__dict__)
+
+            # Add tags to entry obj
+            entry.tags = tags
+
             # Add the dictionary representation of the entry to the list
             entries.append(entry.__dict__)
 
@@ -91,6 +118,33 @@ def get_single_entry(id):
         mood = Mood(data['id'], data['label'])
         # Add the dictionary representation of the location to the entry
         entry.mood = mood.__dict__
+
+        tags = []
+
+        db_cursor.execute("""
+        SELECT
+            e.tag_id,
+            t.label
+        FROM EntryTag e
+        JOIN Tag t
+            ON e.tag_id = t.id
+        WHERE e.entry_id = ?
+        """, (data['id'], ))
+
+        tag_dataset = db_cursor.fetchall()
+
+        # tag_dataset = query_entrytag_by_entry_id(data['id'])
+
+        for data in tag_dataset:
+
+            # Create tag instance and set properties from db
+            tag = Tag(data['tag_id'], data['label'])
+
+            # Add the dictionary representation of the Tag to the list
+            tags.append(tag.__dict__)
+
+        # Add tags to entry obj
+        entry.tags = tags
 
         return json.dumps(entry.__dict__)
 
@@ -178,3 +232,23 @@ def get_entries_search(search_term):
             entries.append(entry.__dict__)
 
     return json.dumps(entries)
+
+
+# def query_entrytag_by_entry_id(id):
+#     with sqlite3.connect("./dailyjournal.sqlite3") as conn:
+#         conn.row_factory = sqlite3.Row
+#         db_cursor = conn.cursor()
+
+#         db_cursor.execute("""
+#             SELECT
+#                 e.tag_id,
+#                 t.label
+#             FROM EntryTag e
+#             JOIN Tag t
+#                 ON e.tag_id = t.id
+#             WHERE e.entry_id = ?
+#             """, (id, ))
+
+#         dataset = db_cursor.fetchall()
+
+#     return dataset
