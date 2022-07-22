@@ -16,6 +16,8 @@ class Entry():
                 the id of the mood associated around the entry
         mood
                 None
+        tags
+                None
         """
         self.id = id
         self.concept = concept
@@ -23,3 +25,4 @@ class Entry():
         self.date = date
         self.mood_id = mood_id
         self.mood = None
+        self.tags = None
