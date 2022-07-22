@@ -53,6 +53,14 @@ INSERT INTO `JournalEntry` VALUES (null, "Javascript", "I learned about loops to
 INSERT INTO `JournalEntry` VALUES (null, "Python", "Python is named after the Monty Python comedy group from the UK. I'm sad because I thought it was named after the snake", "Wed Jul 19 2022 10:10:47", 3 );
 INSERT INTO `JournalEntry` VALUES (null, "Python", "Why did it take so long for python to have a switch statement? It's much cleaner than if/elif blocks", "Wed Jul 19 2022 10:10:47", 4 );
 
+INSERT INTO `EntryTag` VALUES (null, 1, 1);
+INSERT INTO `EntryTag` VALUES (null, 1, 2);
+INSERT INTO `EntryTag` VALUES (null, 2, 2);
+INSERT INTO `EntryTag` VALUES (null, 2, 3);
+
+
+
+
 
 SELECT
     j.id,
@@ -76,3 +84,20 @@ FROM JournalEntry j
 JOIN Mood m
 	ON m.id = j.mood_id
 WHERE j.entry LIKE 'pyt';
+
+SELECT 
+	e.tag_id,
+	t.label
+FROM EntryTag e
+JOIN Tag t
+	ON e.tag_id = t.id
+WHERE e.entry_id = 1
+
+INSERT INTO `EntryTag` VALUES (null, 2, 6);
+INSERT INTO `EntryTag` VALUES (null, 3, 6);
+INSERT INTO `EntryTag` VALUES (null, 5, 5);
+INSERT INTO `EntryTag` VALUES (null, 5, 2);
+INSERT INTO `EntryTag` VALUES (null, 6, 2);
+INSERT INTO `EntryTag` VALUES (null, 6, 1);
+INSERT INTO `EntryTag` VALUES (null, 6, 3);
+INSERT INTO `EntryTag` VALUES (null, 6, 7);
